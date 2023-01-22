@@ -1,0 +1,101 @@
+﻿@model IEnumerable<OnlineTutorSystem.Models.Student>
+
+@{
+    ViewBag.Title = "display2";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+}
+
+
+<div class="site-section-cover overlay" style="background-image: url('/Template/images/hero_bg.jpg'); ">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1>The <strong>Hub</strong> Of <strong>Tutorials</strong></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="site-section bg-light">
+
+    <div class="container">
+        <p>
+            @Html.ActionLink("Create New", "Create")
+        </p>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.img)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.fname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.lname)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.gender)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.phone_no)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.password)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.confirmpassword)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td >
+
+                        @{
+                            var base64 = Convert.ToBase64String(item.img);
+                            var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        <img src="@imgsrc" style="border-radius: 8%; width: 150px; height: 150px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.fname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.lname)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.gender)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.phone_no)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.password)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.confirmpassword)
+                    </td>
+                    <td>
+                        <a class= "btn btn-primary">asdasda</a>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.id, @class= "btn btn-primary" }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.id })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>

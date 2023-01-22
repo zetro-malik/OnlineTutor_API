@@ -1,0 +1,119 @@
+﻿
+
+
+@model OnlineTutorSystem.Models.Student
+@{
+    ViewBag.Title = "SignUpTeacher";
+    Layout = "~/Views/Shared/_LSLayout.cshtml";
+    var lst = new List<SelectListItem>();
+    lst.Add(new SelectListItem { Value = "asd", Text = "asd" });
+    lst.Add(new SelectListItem { Value = "asd", Text = "asd" });
+    lst.Add(new SelectListItem { Value = "asd", Text = "asd" });
+    lst.Add(new SelectListItem { Value = "asd", Text = "asd" });
+    lst.Add(new SelectListItem { Value = "asd", Text = "asd" });
+}
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-sm-10 col-md-12 col-lg-11 col-xl-10">
+            <div class="card d-flex mx-auto my-5">
+                <div class="row">
+                    <div class="col-md-5 col-sm-12 col-xs-12 c1 p-5">
+                        <div class="row mb-5 m-3"> <img src="https://i.imgur.com/pFfTOwy.jpg" width="70vw" height="55vh" alt=""> </div> <img src="https://i.imgur.com/kdE7GKw.jpg" width="120vw" height="210vh" class="mx-auto d-flex" alt="Teacher">
+                        <div class="row justify-content-center">
+                            <div class="w-75 mx-md-5 mx-1 mx-sm-2 mb-5 mt-4 px-sm-5 px-md-2 px-xl-1 px-2">
+                                <h1 class="wlcm">Welcome to your blackboard</h1> <span class="sp1"> <span class="px-3 bg-danger rounded-pill"></span> <span class="ml-2 px-1 rounded-circle"></span> <span class="ml-2 px-1 rounded-circle"></span> </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12 c2 px-5 pt-5">
+
+
+                        <div class="row">
+                            <nav class="nav font-weight-500 mb-1 mb-sm-2 mb-lg-5 px-sm-2 px-lg-5"> <a class="nav-link ac" href="/LS/loginStudent" style="font-size:22px;">Students</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a class="nav-link" href="/LS/loginTeacher" style="font-size:22px;">Tutor</a> </nav>
+                        </div>
+                        @Scripts.Render("~/bundles/jquery")
+                        @Scripts.Render("~/bundles/jqueryval")
+                        @using (Html.BeginForm("SignUpStudent", "LS", FormMethod.Post, new { Class = "px-5 pb-5", enctype = "multipart/form-data" }))
+
+
+                        {@Html.AntiForgeryToken()
+                        <div class="d-flex">
+
+                            <h3 class="font-weight-bold"><font style="color: #e0726c; ">Student</font> Sign Up</h3>
+                        </div>
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.fname, new { placeholder = "First Name", @class = "inp" })
+                        @Html.ValidationMessageFor(model => model.fname, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.lname, new { placeholder = "Last Name", @class = "inp" })
+                        @Html.ValidationMessageFor(model => model.lname, "", new { @class = "text-danger" })
+
+                        <br /> <b> @Html.LabelFor(model => model.gender)</b> <br />
+                        <div class="form-check form-check-inline">
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            @Html.RadioButtonFor(model => model.gender, "Male", new { @class = "form-check-input", @id = "inlineRadio1" })
+
+                            <label class="form-check-label" for="inlineRadio1">Male</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+                            @Html.RadioButtonFor(model => model.gender, "Female", new { @class = "form-check-input", @id = "inlineRadio2" })
+                            <label class="form-check-label" for="inlineRadio2">Female</label>
+                        </div>
+
+
+
+
+                        @Html.TextBoxFor(model => model.phone_no, new { placeholder = "Phone No", @class = "inp" })
+                        @Html.ValidationMessageFor(model => model.phone_no, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.email, new { placeholder = "Email", @class = "inp" })
+                        @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+
+                        @Html.TextBoxFor(model => model.password, new { placeholder = "Password", @class = "inp", id = "password-field", Type = "password" })
+                        @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                        @Html.TextBoxFor(model => model.confirmpassword, new { placeholder = "Confirm Password", @class = "inp", id = "password-field", Type = "password" })
+                        @Html.ValidationMessageFor(model => model.confirmpassword, "", new { @class = "text-danger" })
+                    
+            
+                        <div class="form-row">
+                            <div class="form-file">
+
+
+                                <input type="file" class="inputfile" name="image" id="your_picture" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this);" data-multiple-caption="{count} files selected" multiple />
+
+                                <label for="your_picture">
+                                    <figure>
+                                        <img src="~/Template/images/placeholder-avatar.jpg" alt="" style="object-fit: cover;" class="your_picture_image">
+
+
+                                    </figure>
+                                    <span class="file-button">choose picture</span>
+                                </label>
+                            </div>
+                        </div>
+
+
+
+                        <br /><br />
+
+                        <button type="submit" class="text-white text-weight-bold bt">Register</button>
+                        <a href="/LS/LogInStudent"><h5 class="ac" id="register">Log In</h5></a>
+
+                    }
+                        @if (ViewBag.Message != null)
+                        {
+                            <script type="text/javascript">
+                     window.onload = function () {
+                     alert("@ViewBag.Message");
+            };
+                            </script>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

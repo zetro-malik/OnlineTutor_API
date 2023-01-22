@@ -1,0 +1,374 @@
+﻿@model IEnumerable<OnlineTutorSystem.Models.SearchedTutor>
+@using System.Data.SqlClient
+@{
+    ViewBag.Title = "SearchTutor";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+    ViewBag.Home = "";
+    ViewBag.Contact = "";
+    ViewBag.Profile = "";
+    ViewBag.SearchTutors = "active";
+    ViewBag.MyTutors = "";
+    var citylst = new List<SelectListItem>()
+{
+    new SelectListItem{Value="Islamabad",Text="Islamabad"},
+    new SelectListItem{Value="RawalPindi",Text="RawalPindi"},
+    new SelectListItem{Value="Lahore",Text="Lahore"},
+    new SelectListItem{Value="Karachi",Text="Karachi"}
+    };
+    var classlst = new List<SelectListItem>();
+    string constr = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=onlinetutor;Data Source=ZETRO\\MSSQLSERVER01";
+    SqlConnection con = new SqlConnection(constr);
+    con.Open();
+    String q = "select * from class";
+    SqlCommand cmd = new SqlCommand(q, con);
+    SqlDataReader dr = cmd.ExecuteReader();
+    while (dr.Read())
+    {
+        classlst.Add(new SelectListItem { Value = dr["cid"].ToString(), Text = dr["class"].ToString() });
+    }
+    dr.Close();
+
+    con.Close();
+}
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/bootstrap")
+@Scripts.Render("~/bundles/datatable")
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+<style>
+
+
+    .cart-item-thumb {
+        display: block;
+        width: 10rem
+    }
+
+        .cart-item-thumb > img {
+            display: block;
+            width: 100%
+        }
+
+    .product-card-title > a {
+        color: #222;
+    }
+
+    .font-weight-semibold {
+        font-weight: 600 !important;
+    }
+
+    .product-card-title {
+        display: block;
+        margin-bottom: .75rem;
+        padding-bottom: .875rem;
+        border-bottom: 1px dashed #e2e2e2;
+        font-size: 1rem;
+        font-weight: normal;
+    }
+
+    .text-muted {
+        color: #888 !important;
+    }
+
+    .bg-secondary {
+        background-color: #f7f7f7 !important;
+    }
+
+    .accordion .accordion-heading {
+        margin-bottom: 0;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .font-weight-semibold {
+        font-weight: 600 !important;
+    }
+</style>
+
+
+
+<div class="site-section-cover overlay" style="background-image: url('/Template/images/hero_bg.jpg'); ">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1>Search<strong> Tutors</strong></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="site-section bg-light">
+
+    <div class="container">
+
+        <div class="container pb-5 mt-n2 mt-md-n3">
+            <div class="row">
+                <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
+
+                    <div class="pt-4">
+                        <div class="accordion" id="cart-accordion">
+                            @using (Html.BeginForm("SearchTutor", "Student", FormMethod.Post))
+                            {
+
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3 class="accordion-heading font-weight-semibold"><a class="collapsed" href="#shipping" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shipping">Search Tutor<span class="accordion-indicator"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up"><polyline points="18 15 12 9 6 15"></polyline></svg></span></a></h3>
+                                    </div>
+                                    <div id="shipping" data-parent="#cart-accordion">
+                                        <div class="card-body">
+                                            <form class="needs-validation" novalidate="">
+                                                <div class="form-group">
+                                                    @Html.DropDownList("ncity", citylst, "Choose City", new { @class = "form-control custom-select" })
+                                                    @*@Html.ValidationMessageFor(model => model.city, "", new { @class = "text-danger" })*@
+                                                    <div class="invalid-feedback">Please choose your country!</div>
+                                                </div>
+                                                <div class="form-group">
+                                                    @Html.DropDownList("nclass", classlst, "Choose Class", new { @class = "form-control custom-select", @id = "nclass" })
+                                                    @*@Html.ValidationMessageFor(model => model.classID, "", new { @class = "text-danger" })*@
+                                                    <div class="invalid-feedback">Please choose your city!</div>
+                                                </div>
+                                                <div class="form-group" id="sub">
+                                                    @Html.DropDownList("nsubject", new List<SelectListItem>(), "Choose Class", new { @class = "form-control custom-select", @id = "nsubject" })
+                                                    @*@Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })*@
+                                                    <div class="invalid-feedback">Please choose your city!</div>
+                                                </div>
+
+                                                <button class="btn btn-outline-primary btn-block" type="submit">Search</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-9 col-md-8">
+                    <h2 class="h6 d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-secondary"><span style="font-size:20px;">Tutor</span></h2>
+                    <h1 id="notavlb">@ViewBag.islstnull</h1>
+                    @if (Model == null)
+                    {
+
+                    }
+                    else
+                    {
+                        foreach (var item in Model)
+                        {
+
+
+                            List<SelectListItem> lst = new List<SelectListItem>();
+                            con.Open();
+                            String query = "select time from timing where subid in (select subid from subjects where title='" + item.subject + "' and tid in (select tid from tutor where class='" + item.Class + "' and tid=" + item.id + ")) and not timeid in (select timeid from apply)";
+                            SqlCommand cmd1 = new SqlCommand(query, con);
+                            SqlDataReader sdr = cmd1.ExecuteReader();
+                            while (sdr.Read())
+                            {
+                                lst.Add(new SelectListItem { Value = sdr[0].ToString(), Text = sdr[0].ToString() });
+                            }
+
+                            sdr.Close();
+                            con.Close();
+                            using (Html.BeginForm("applyStudent", "Student", FormMethod.Post))
+
+
+                            {
+                                <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+                                    <div class="media d-block d-sm-flex text-center text-sm-left">
+                                        @{
+                                            var base64 = Convert.ToBase64String(item.img);
+                                            var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                                        }
+                                        <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="@imgsrc" style="height: 150PX; width: 150PX; object-fit: cover; border-radius: 8%;" alt="Product"></a>
+                                        <div class="media-body pt-3">
+                                            <h3 class="product-card-title font-weight-semibold border-0 pb-0"> @Html.DisplayFor(modelItem => item.fname)  @Html.DisplayFor(modelItem => item.lname) </h3>
+                                            <div class="font-size-sm"><span class="text-muted mr-2">Gender:</span>@Html.DisplayFor(modelItem => item.gender)</div>
+                                            <div class="font-size-sm"><span class="text-muted mr-2">Course:</span>@Html.DisplayFor(modelItem => item.Class)  @Html.DisplayFor(modelItem => item.subject)</div>
+                                            <div class="font-size-sm"><span class="text-muted mr-2">From:</span> @Html.DisplayFor(modelItem => item.city)</div>
+                                            <div class="font-size-lg text-primary pt-2">@Html.DisplayFor(modelItem => item.price)-PKR</div>
+                                        </div>
+                                    </div>
+                                    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+
+
+                                        @*<div class="btn btn-dark" style="width:140px;">
+                                @Html.ActionLink("Hire", "Show", new { id = item.id, time = item.time, @style = "text-decoration:none;color:red;" })
+                            </div>
+                            <button type="button" class="btn btn-primary btn-large" onclick="window.location.href('@Url.Action("Show", "Student",new {id = item.id, time = item.time})')">Add New User</button>*@
+                                        <div class="form-group mb-2">
+                                            @Html.DropDownList("ddl", lst, new { @class = "form-control form-control-sm" })
+                                        </div>
+                                        <input type="hidden" name="id" value=@item.id>
+
+                                        <button class="btn btn-primary" type="submit" style="text-align:center; width:140px;margin-top:10px;" @*onclick="location.href='@Url.Action("applyStudent","Student",new {id = item.id, time = item.time})'"*@>Hire</button>
+                                        <span id="span1"></span>
+                                    </div>
+                                </div>
+
+                            }
+
+                        }
+
+
+                    }
+
+                    <!-- Item-->
+                    <!-- Item-->
+                    <!--<div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://via.placeholder.com/240x240/1E90FF/000000" alt="Product"></a>
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">The North Face Hoodie</a></h3>
+                <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>XL</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Gray</div>
+                <div class="font-size-lg text-primary pt-2">$134.00</div>
+            </div>
+        </div>
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+            <div class="form-group mb-2">
+                <label for="quantity2">Quantity</label>
+                <input class="form-control form-control-sm" type="number" id="quantity2" value="1">
+            </div>
+            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>Update cart
+            </button>
+            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>Remove
+            </button>
+        </div>
+    </div>-->
+                    <!-- Item-->
+                    <!--<div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://via.placeholder.com/240x240/FF8C00/000000" alt="Product"></a>
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">Medicine Chameleon Sunglasses</a></h3>
+                <div class="font-size-sm"><span class="text-muted mr-2">Lenses:</span>Chameleon</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">Frame:</span>Gray / Black</div>
+                <div class="font-size-lg text-primary pt-2">$47.00</div>
+            </div>
+        </div>
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+            <div class="form-group mb-2">
+                <label for="quantity3">Quantity</label>
+                <input class="form-control form-control-sm" type="number" id="quantity3" value="1">
+            </div>
+            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>Update cart
+            </button>
+            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>Remove
+            </button>
+        </div>
+    </div>-->
+                    <!-- Item-->
+                    <!--<div class="d-sm-flex justify-content-between my-4">
+        <div class="media d-block d-sm-flex text-center text-sm-left">
+            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://via.placeholder.com/240x240/eeeeee/000000" alt="Product"></a>
+            <div class="media-body pt-3">
+                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">Adidas Performance Hat</a></h3>
+                <div class="font-size-sm"><span class="text-muted mr-2">Material:</span>Acrylic</div>
+                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Pink / Dark green</div>
+                <div class="font-size-lg text-primary pt-2">$19.00</div>
+            </div>
+        </div>
+        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+            <div class="form-group mb-2">
+                <label for="quantity4">Quantity</label>
+                <input class="form-control form-control-sm" type="number" id="quantity4" value="1">
+            </div>
+            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <polyline points="1 20 1 14 7 14"></polyline>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>Update cart
+            </button>
+            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>Remove
+            </button>
+        </div>
+    </div>-->
+                </div>
+                <!-- Sidebar-->
+
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+@*<script>
+    function getdata() {
+        $(document).ready(function () {
+            $("#timeddl").change(function () {
+                var a = $("#timeddl Option:Selected").text();
+                $("#timebox").val(a);
+
+            })
+        })
+    }
+     
+   
+</script>*@
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+        $("#nclass").change(function () {
+            $("#nsubject").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetSubList","Student")',
+                dataType: 'json',
+                data: { id: $("#nclass").val() },
+                success: function (citys) {
+                    // states contains the JSON formatted list
+                    // of states passed from the controller
+                    $.each(citys, function (i, city) {
+                        $("#nsubject").append('<option value="'+ city.Value + '">'+ city.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+
+
+    setTimeout(function () {
+        $('#notavlb').fadeOut('fast');
+    }, 2000);
+
+</script>

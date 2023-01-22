@@ -1,0 +1,151 @@
+﻿@model IEnumerable<OnlineTutorSystem.Models.SearchedTutor>
+@using System.Data.SqlClient;
+@{
+    ViewBag.Title = "detailsTutor";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+
+
+
+
+}
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    body {
+        background: #eee
+    }
+
+    .card {
+        border: none;
+        position: relative;
+        overflow: hidden;
+        border-radius: 8px;
+        cursor: pointer
+    }
+
+        .card:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #E1BEE7;
+            transform: scaleY(1);
+            transition: all 0.5s;
+            transform-origin: bottom
+        }
+
+        .card:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 4px;
+            height: 100%;
+            background-color: #8E24AA;
+            transform: scaleY(0);
+            transition: all 0.5s;
+            transform-origin: bottom
+        }
+
+        .card:hover::after {
+            transform: scaleY(1)
+        }
+
+    .fonts {
+        font-size: 11px
+    }
+
+    .social-list {
+        display: flex;
+        list-style: none;
+        justify-content: center;
+        padding: 0
+    }
+
+        .social-list li {
+            padding: 10px;
+            color: #8E24AA;
+            font-size: 19px
+        }
+
+    .buttons button:nth-child(1) {
+        border: 1px solid #8E24AA !important;
+        color: #8E24AA;
+        height: 40px
+    }
+
+        .buttons button:nth-child(1):hover {
+            border: 1px solid #8E24AA !important;
+            color: #fff;
+            height: 40px;
+            background-color: #8E24AA
+        }
+
+    .buttons button:nth-child(2) {
+        border: 1px solid #8E24AA !important;
+        background-color: #8E24AA;
+        color: #fff;
+        height: 40px
+    }
+</style>
+<div class="site-section-cover overlay" style="background-image: url('/Template/images/hero_bg.jpg'); ">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1>   <strong>My</strong> Tutors</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="site-section bg-light">
+
+    <div class="container">
+
+        @foreach (var item in Model)
+        {
+            <div class="container mt-5">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-7">
+                        <div class="card p-3 py-4">
+                            @{
+                                var base64 = Convert.ToBase64String(item.img);
+                                var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            <div class="text-center"> <img src="@imgsrc" style="border-radius: 50%; height: 150PX; width: 150PX; object-fit: cover; border-radius: 50%;"> </div>
+                            <div class="text-center mt-3" style="font-family:Arial;">
+                                <h5 class="mt-2 mb-0"><font style="font-weight:bold;">@item.fname @item.lname</font></h5>
+                                <span><font style="font-weight:bold;">Gender:</font> @item.gender</span><br>
+                                <span><font style="font-weight:bold;">City:</font> @item.city</span><br>
+                                <span><font style="font-weight:bold;">Class:</font> @item.Class</span><br>
+                                <span >
+                                    <font style="font-weight:bold;">Contact</font><br />
+                                    @item.phone<br />
+                                    @item.email
+                                </span><br>
+
+                                <div class="px-4 mt-1">
+                                    <p class="fonts">@item.Bio</p>
+                                </div>
+                             
+                                <button class="btn btn-primary px-4 ms-3"onclick="location.href='@Url.Action("Mytutors","Student")'">Back</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    
+
+</div>
+

@@ -1,0 +1,249 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="colorlib.com">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sign Up Form</title>
+    
+    <!-- Font Icon -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="~/Template/css/bootstrap/bootstrap.css" rel="stylesheet" />
+    <!-- Main css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <style>
+        html,
+        body {
+            height: 100%
+        }
+
+        body {
+            
+            background-color:dodgerblue;
+            display: grid;
+            place-items: center
+        }
+
+        .card {
+            padding: 0px 15px;
+            border-radius: 20px
+        }
+
+        .c1 {
+            background-color: #fff2f1;
+            border-radius: 20px
+        }
+
+        a {
+            margin: 0px;
+            font-size: 13px;
+            border-radius: 7px;
+            text-decoration: none;
+            color: black
+        }
+
+            a:hover {
+                color: #e0726c;
+                background-color: #fff2f1
+            }
+
+        .nav-link {
+            padding: 1rem 1.4rem;
+            margin: 0rem 0.7rem
+        }
+
+        .ac {
+            font-weight: bold;
+            color: #e0726c;
+            font-size: 12px
+        }
+
+   /*     input,*/
+        
+        button {
+            width: 96%;
+            background-color: #fff2f1;
+            border-radius: 8px;
+            padding: 8px 17px;
+            font-size: 13px;
+            border: 1px solid #f5f0ef;
+            color: #595656
+        }
+
+        .inp {
+            width: 96%;
+            background-color: #fff2f1;
+            border-radius: 8px;
+            padding: 8px 17px;
+            font-size: 13px;
+            border: 1px solid #f5f0ef;
+            color: #595656;
+            text-decoration: none
+        }
+        .reset {
+            all:unset;
+        }
+        input: {
+            text-decoration: none;
+        }
+
+        .bt {
+            background-color: #ff4133;
+            border: 1px solid rgb(300, 200, 200)
+        }
+
+        form {
+            margin-top: 70px
+        }
+
+            form > * {
+                margin: 10px 0px
+            }
+
+        #forgot {
+            margin: 0px -60px
+        }
+
+        #register {
+            text-align: center
+        }
+
+        img {
+            background-color: antiquewhite
+        }
+
+        .wlcm {
+            font-size: 30px
+        }
+
+        .sp1 {
+            font-size: 5px
+        }
+
+            .sp1 > span {
+                background-color: #f0c3be
+            }
+
+
+
+
+        .inputfile {
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+            .inputfile + label {
+                text-transform: uppercase;
+            }
+
+            .inputfile + label {
+                max-width: 100%;
+                font-size: 14px;
+                font-weight: bold;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                cursor: pointer;
+                display: inline-block;
+                overflow: hidden;
+                text-align: center;
+            }
+
+                .inputfile + label figure {
+                    width: 154px;
+                    height: 154px;
+                    border-radius: 50%;
+                    background-color: transparent;
+                    display: block;
+                    margin: 0 auto;
+                    margin-bottom: 6px;
+                }
+
+                    .inputfile + label figure img {
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 50%;
+                    }
+
+        .form-row {
+            justify-content: space-between;
+            -moz-justify-content: space-between;
+            -webkit-justify-content: space-between;
+            -o-justify-content: space-between;
+            -ms-justify-content: space-between;
+            align-items: center;
+            -moz-align-items: center;
+            -webkit-align-items: center;
+            -o-align-items: center;
+            -ms-align-items: center;
+        }
+
+        .form-group-flex {
+            width: 510px;
+        }
+
+        .form-group {
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .form-input {
+            width: 50%;
+            padding: 0 10px;
+            padding-bottom: 20px;
+            position: relative;
+        }
+
+        .form-input-flex {
+            margin: 0 -10px;
+        }
+
+        input.error {
+            border: 1px solid #f63726;
+            margin-bottom: 20px;
+        }
+
+        label.error {
+            font-size: 12px;
+            color: #f63726;
+            position: absolute;
+            bottom: 17px;
+            left: 0;
+        }
+    </style>
+
+</head>
+<body>
+
+
+    @RenderBody()
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('.your_picture_image')
+                        .attr('src', e.target.result);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+          
+        }
+        
+
+        
+
+    </script>
+</body>
+</html>

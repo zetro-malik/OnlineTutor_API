@@ -1,0 +1,315 @@
+﻿@using System.Data.SqlClient;
+@model OnlineTutorSystem.Models.Student
+@{
+    if (Session["studentID"] == null)
+    {
+        return;
+    }
+    ViewBag.Title = "ProfileEdit";
+    Layout = "~/Views/Shared/_StudentLayout.cshtml";
+    ViewBag.Home = "";
+    ViewBag.Contact = "";
+    ViewBag.Profile = "active";
+    ViewBag.SearchTutors = "";
+    ViewBag.MyTutors = "";
+
+
+    string constr = "Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=onlinetutor;Data Source=ZETRO\\MSSQLSERVER01";
+    SqlConnection con = new SqlConnection(constr);
+    con.Open();
+    String q = "select * from student where sid='" + Session["studentID"].ToString() + "'";
+    SqlCommand c = new SqlCommand(q, con);
+    SqlDataReader dr = c.ExecuteReader();
+    dr.Read();
+
+    ViewBag.fname = dr["fname"];
+    ViewBag.lname = dr["lname"];
+    ViewBag.phone = dr["phone_no"];
+    ViewBag.email = dr["email"];
+
+
+    var base64 = Convert.ToBase64String((byte[])dr["img"]);
+    var imgsrc = string.Format("data:image/gif;base64,{0}", base64);
+
+
+}
+<style>
+
+  
+    .inputfile {
+        width: 0.1px;
+        height: 0.1px;
+        opacity: 0;
+        overflow: hidden;
+        position: absolute;
+        z-index: -1;
+    }
+
+        .inputfile + label {
+            text-transform: uppercase;
+        }
+
+        .inputfile + label {
+            max-width: 100%;
+            font-size: 14px;
+            font-weight: bold;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            cursor: pointer;
+            display: inline-block;
+            overflow: hidden;
+            text-align: center;
+        }
+
+            .inputfile + label figure {
+                width: 154px;
+                height: 154px;
+                border-radius: 50%;
+                background-color: transparent;
+                display: block;
+                margin: 0 auto;
+                margin-bottom: 6px;
+            }
+
+                .inputfile + label figure img {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                }
+</style>
+<div class="site-section-cover overlay" style="background-image: url('/Template/images/hero_bg.jpg'); ">
+
+    <div class="container">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1>   <strong>Profile</strong></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="site-section bg-light">
+
+    <div class="container">
+
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        <div class="container">
+            <div class="row flex-lg-nowrap">
+                @Scripts.Render("~/bundles/jquery")
+                @Scripts.Render("~/bundles/jqueryval")
+                @using (Html.BeginForm("ProfileEdit", "Student", FormMethod.Post, new { Class = "px-5 pb-5", enctype = "multipart/form-data" }))
+                {<div class="col">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="e-profile">
+                                            <div class="row">
+                                                <div class="col-12 col-sm-auto mb-3">
+                                                    <div class="mx-auto" style="width: 140px;">
+                                                        <div class="d-flex justify-content-center align-items-center rounded" style="height: 140px; background-color: rgb(233, 236, 239);">
+
+                                                            <img style="width: 100%; height: 100%; object-fit: cover; border-radius: 8%;" src="@imgsrc" class="your_picture_image" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                                                    <div class="text-center text-sm-left mb-2 mb-sm-0">
+                                                        <h3 class="pt-sm-2 pb-1 mb-0 text-nowrap" style="font-weight:bold;">@ViewBag.fname  @ViewBag.lname</h3>
+                                                        <p class="mb-0"></p>
+                                                        
+                                                        <div class="mt-2" >
+
+                                                            <input  type="file" name="image" id="your_picture" accept="image/x-png,image/gif,image/jpeg" onchange="readURL(this);" data-multiple-caption="{count} files selected" multiple />
+
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <ul class="nav nav-tabs">
+                                                <li class="nav-item"><a href="/Student/ProfileEdit" class="active nav-link">Edit Profiles</a></li>
+
+                                            </ul>
+                                            <div class="tab-content pt-3">
+                                                <div class="tab-pane active">
+                                                    <form class="form" novalidate="">
+                                                        <div class="row">
+                                                            <div class="col">
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+
+                                                                            @Html.LabelFor(model => model.fname)
+                                                                            @Html.TextBoxFor(model => model.fname, new { @class = "form-control", @Value = @ViewBag.fname, @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.fname, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            @Html.LabelFor(model => model.lname)
+                                                                            @Html.TextBoxFor(model => model.lname, new { @class = "form-control", @Value = @ViewBag.lname, @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.lname, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            @Html.LabelFor(model => model.phone_no)
+                                                                            @Html.TextBoxFor(model => model.phone_no, new { @class = "form-control", @Value = @ViewBag.phone, @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.phone_no, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            @Html.LabelFor(model => model.email)
+                                                                            @Html.TextBoxFor(model => model.email, new { @class = "form-control", @Value = @ViewBag.email, @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.email, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-12 col-sm-6 mb-3">
+                                                                <div class="mb-2"><b>Change Password</b></div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            <label>Current Password</label>
+                                                                            <input class="form-control" type="password" name="ps" style="font-family:Arial;">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            @Html.LabelFor(model => model.password)
+                                                                            @Html.TextBoxFor(model => model.password, new { @class = "form-control", id = "password-field", Type = "password", @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.password, "", new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <div class="form-group">
+                                                                            @Html.LabelFor(model => model.confirmpassword)
+                                                                            @Html.TextBoxFor(model => model.confirmpassword, new { @class = "form-control", id = "password-field", Type = "password", @style = "font-family:Arial;" })
+                                                                            @Html.ValidationMessageFor(model => model.confirmpassword, "", new { @class = "text-danger", })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-12 col-sm-5 offset-sm-1 mb-3">
+                                                                <div class="mb-2"><b>Keeping in Touch</b></div>
+                                                                <div class="row">
+                                                                    <div class="col">
+                                                                        <label>Email Notifications</label>
+                                                                        <div class="custom-controls-stacked px-2">
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                <input type="checkbox" class="custom-control-input" id="notifications-blog" checked="">
+                                                                                <label class="custom-control-label" for="notifications-blog">Blog posts</label>
+                                                                            </div>
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                <input type="checkbox" class="custom-control-input" id="notifications-news" checked="">
+                                                                                <label class="custom-control-label" for="notifications-news">Newsletter</label>
+                                                                            </div>
+                                                                            <div class="custom-control custom-checkbox">
+                                                                                <input type="checkbox" class="custom-control-input" id="notifications-offers" checked="">
+                                                                                <label class="custom-control-label" for="notifications-offers">Personal Offers</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col d-flex justify-content-end">
+                                                                <button class="btn btn-primary" type="submit">Save Changes</button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-3 mb-3">
+                                <div class="card mb-3">
+                                    <div class="card-body">
+                                        <div class="px-xl-3">
+                                            <a href="/Student/logout" class="btn btn-block btn-secondary" onclick="ClearHistory()">
+
+                                                <i class="fa fa-sign-out"></i>
+                                                <span>Logout</span>
+
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h6 class="card-title font-weight-bold">Support</h6>
+                                        <p class="card-text">Get fast, free help from our friendly assistants.</p>
+                                        <a href="/Student/contact" class="btn btn-block btn-secondary" style="background-color:dodgerblue;">
+                                            Contact Us
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>}
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+                     window.onload = function () {
+                     alert("@ViewBag.Message");
+            };
+    </script>
+}
+<script>
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.your_picture_image')
+                    .attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+
+    }
+
+
+
+
+
+
+</script>
+<SCRIPT LANGUAGE="javascript">
+    function ClearHistory() {
+        var backlen = history.length;
+        history.go(-backlen);
+        window.location.href = loggedOutPageUrl
+    }
+</SCRIPT>
